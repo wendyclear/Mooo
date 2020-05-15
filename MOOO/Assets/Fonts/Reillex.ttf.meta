@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 48c1b8efce79ce5438b5f4d4c13d11c7
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Reillex
+  fontNames:
+  - Reillex
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: fe69b2819b256b84fa4506edd9e14ec4, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
