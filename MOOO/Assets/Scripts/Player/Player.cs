@@ -21,8 +21,11 @@ public class Player : MonoBehaviour
 
     private int _maxSightDistance;
 
+    private float _hp;
+    private bool _alive;
+
     public GameObject Camera;
-    public GameObject CanvasManager;
+    private GameObject _canvasManager;
 
     void Start()
     {
@@ -32,8 +35,10 @@ public class Player : MonoBehaviour
         _gravity          = 9.81f*6;
         _jumpHeight       = 15;
         _maxSightDistance = 10;
+        _hp               = 100;
+        _alive            = true;
+        _canvasManager = GameObject.Find("CanvasManager");
     }
-
 
     void Update()
     {
@@ -41,6 +46,7 @@ public class Player : MonoBehaviour
         MovePlayer();
         Jump();
         Look();
+        CheckHealth();
     }
 
     private void RotateView()
@@ -90,7 +96,6 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out hit, _maxSightDistance, layerMask)
                 && (interactable = hit.collider.gameObject.GetComponent<Interactable>()) != null)
         {
-            Debug.Log("gledam u nešto");
             interactable.ShowText();
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -99,8 +104,17 @@ public class Player : MonoBehaviour
         }
         else
         {
-            CanvasManager.GetComponent<CanvasManager>().HideMessage();
+            _canvasManager.GetComponent<CanvasManager>().HideMessage();
         }
 
+    }
+
+    private void CheckHealth()
+    {
+        if (_hp <= 0)
+        {
+            _alive = false;
+            //end screen
+        }
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Interactable : MonoBehaviour
 {
 	public string Name;
+	public int Id;
 	private GameObject _canvasManager;
 
 	public void Start()
@@ -21,7 +22,8 @@ public class Interactable : MonoBehaviour
 
 	public void Interact()
 	{
-		//Debug.Log("FPSController - interacting with item of id :" + Id);
+		//add to inventory id
+		Object.Destroy(gameObject);
 	}
 
 }

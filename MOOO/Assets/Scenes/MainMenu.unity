@@ -730,7 +730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1289422893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1456,7 +1456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1815454090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1974,9 +1974,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.3
-  m_Text: 'Press [W], [A], [S] and [D] to moooove around.
+  m_Text: 'Press [W], [A], [S] and [D] to MOOOOve around.
 
-    Mooove your mouse around to turn camera.
+    MOOOOve your mouse around to turn camera.
 
     Press [Tab] to open inventory.
 
