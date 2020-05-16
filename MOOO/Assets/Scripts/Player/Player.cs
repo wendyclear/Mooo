@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     public GameObject  Camera;
     private GameObject _canvasManager;
 
+    public bool shoot = false;
+
     void Start()
     {
         _sensitivity      = 4f;
@@ -142,11 +144,17 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        if (Input.GetMouseButtonDown(0))
+       if (Input.GetMouseButtonDown(0))
+       // if (shoot)
         {
-            GameObject projectile = Instantiate(bullet) as GameObject;
-            projectile.transform.position = Camera.transform.position * _far;
-            projectile.GetComponent<Rigidbody>().velocity = Camera.transform.forward * _force;
+            //GameObject projectile = Instantiate(bullet) as GameObject;
+            GameObject bullet = BulletPooler.pooler.GetBullet();
+            if (bullet != null)
+            {
+                bullet.transform.position = Camera.transform.position * _far;
+                bullet.GetComponent<Rigidbody>().velocity = Camera.transform.forward * _force;
+                bullet.SetActive(true);
+            }
 
         }
     }
