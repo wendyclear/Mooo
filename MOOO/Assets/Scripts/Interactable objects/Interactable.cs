@@ -9,6 +9,8 @@ public class Interactable : MonoBehaviour
 	public int Id;
 	private GameObject _canvasManager;
 
+	public GameObject _player;
+
 	public void Start()
 	{
 		_canvasManager = GameObject.Find("CanvasManager");
@@ -23,6 +25,7 @@ public class Interactable : MonoBehaviour
 	public void Interact()
 	{
 		//add to inventory id
+		//_player.GetComponent<Player>().TakeDamage(120);
 		Object.Destroy(gameObject);
 	}
 

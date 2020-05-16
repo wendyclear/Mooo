@@ -7,6 +7,8 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject _mainCanvas;
     public GameObject _instructionsCanvas;
+    public GameObject _buttons;
+    public GameObject _loadingBar;
 
     public void OnButtonClick_ExitGame()
     {
@@ -15,7 +17,9 @@ public class MainMenu : MonoBehaviour
 
     public void OnButtonClick_StartGame()
     {
-        SceneManager.LoadScene(1);
+        _buttons.SetActive(false);
+        _loadingBar.SetActive(true);
+        LoadGame();
     }
 
     public void OnButtonClick_OpenInstructions()
@@ -28,5 +32,11 @@ public class MainMenu : MonoBehaviour
     {
         _mainCanvas.SetActive(true);
         _instructionsCanvas.SetActive(false);
+    }
+
+    private void LoadGame()
+    {
+        _loadingBar.GetComponent<LoadingBar>().LoadGame();
+        //WSceneManager.LoadScene(1);
     }
 }

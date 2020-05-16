@@ -5,26 +5,34 @@ using UnityEngine.Animations;
 
 public class Player : MonoBehaviour
 {
-    private float   _rotateX;
-    private float   _rotateY;
-    private float   _sensitivity;
-    private float   _cameraRotation;
-                    
-    private float   _moveX;
-    private float   _moveY;
-    private float   _moveSpeed;
-
-    private float   _gravity;
-    private float   _jumpHeight;
-    private Vector3 _velocity;
-    private bool    _onGround;
-
-    private int _maxSightDistance;
-
-    private float _hp;
-    private bool _alive;
-
-    public GameObject Camera;
+    private float      _rotateX;
+    private float      _rotateY;
+    private float      _sensitivity;
+    private float      _cameraRotation;
+                       
+    private float      _moveX;
+    private float      _moveY;
+    private float      _moveSpeed;
+                       
+    private float      _gravity;
+    private float      _jumpHeight;
+    private Vector3    _velocity;
+    private bool       _onGround;
+                       
+    private int        _maxSightDistance;
+                       
+    private float      _hp;
+    private bool       _alive;
+    private bool       _paused;
+                       
+    public GameObject  bullet;
+    public float       _bulletSpeed;
+                       
+    private int        _far = 1;
+    public float       _up = 0;
+    private int        _force = 80;
+                       
+    public GameObject  Camera;
     private GameObject _canvasManager;
 
     void Start()
@@ -36,17 +44,23 @@ public class Player : MonoBehaviour
         _jumpHeight       = 15;
         _maxSightDistance = 10;
         _hp               = 100;
+        _bulletSpeed      = 100;
         _alive            = true;
-        _canvasManager = GameObject.Find("CanvasManager");
+        _paused           = false;
+        _canvasManager    = GameObject.Find("CanvasManager");
     }
 
     void Update()
     {
-        RotateView();
-        MovePlayer();
-        Jump();
-        Look();
-        CheckHealth();
+        if (!_paused)
+        {
+            RotateView();
+            MovePlayer();
+            Look();
+            CheckHealth();
+            Shoot();
+            Jump();
+        }
     }
 
     private void RotateView()
@@ -78,6 +92,7 @@ public class Player : MonoBehaviour
             _velocity.y = Mathf.Sqrt(_jumpHeight * _gravity);
         }
         _velocity.y -= _gravity * Time.deltaTime;
+
         GetComponent<CharacterController>().Move(_velocity * Time.deltaTime);
     }
 
@@ -99,7 +114,7 @@ public class Player : MonoBehaviour
             interactable.ShowText();
             if (Input.GetKeyDown(KeyCode.E))
             {
-               interactable.Interact();
+                interactable.Interact();
             }
         }
         else
@@ -114,7 +129,34 @@ public class Player : MonoBehaviour
         if (_hp <= 0)
         {
             _alive = false;
-            //end screen
+            _canvasManager.GetComponent<CanvasManager>().GameOver(_alive);
         }
+    }
+
+    public void Pause(bool paused)
+    {
+       _paused = paused;
+        if (paused) Time.timeScale = 0;
+        else Time.timeScale = 1;
+    }
+
+    private void Shoot()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject projectile = Instantiate(bullet) as GameObject;
+            projectile.transform.position = Camera.transform.position * _far;
+            projectile.GetComponent<Rigidbody>().velocity = Camera.transform.forward * _force;
+
+        }
+    }
+    private void Freeze()
+    {
+        GetComponent<Rigidbody>().isKinematic = _paused;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _hp -= damage;
     }
 }
