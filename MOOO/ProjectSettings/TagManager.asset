@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - ground
+  - redzone
+  - greenzone
   layers:
   - Default
   - TransparentFX
@@ -18,11 +20,11 @@ TagManager:
   - interactable
   - player
   - bullet
-  - 
-  - 
-  - 
-  - 
-  - 
+  - trees
+  - invisiblewall
+  - ground
+  - cow
+  - rocks
   - 
   - 
   - 

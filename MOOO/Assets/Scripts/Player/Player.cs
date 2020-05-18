@@ -7,35 +7,44 @@ public class Player : MonoBehaviour
 {
     private float      _rotateX;
     private float      _rotateY;
+    [SerializeField]
     private float      _sensitivity;
     private float      _cameraRotation;
                        
     private float      _moveX;
     private float      _moveY;
+    [SerializeField]
     private float      _moveSpeed;
                        
     private float      _gravity;
+    [SerializeField]
     private float      _jumpHeight;
     private Vector3    _velocity;
     private bool       _onGround;
-                       
+    [SerializeField]             
     private int        _maxSightDistance;
-                       
+    
+    [SerializeField]
     private float      _hp;
+    [SerializeField]
+    private float      _hpMax;
     private bool       _alive;
     private bool       _paused;
-                       
-    public GameObject  bullet;
-    public float       _bulletSpeed;
-                       
-    private int        _far = 1;
-    public float       _up = 0;
-    private int        _force = 80;
-                       
-    public GameObject  Camera;
+       
+    [SerializeField]
+    private GameObject  bullet;
+    [SerializeField]
+    private float    _bulletSpeed;
+    [SerializeField]                
+    private GameObject  Camera;
+    [SerializeField]
     private GameObject _canvasManager;
 
-    public bool shoot = false;
+    [SerializeField]
+    private Transform _bottom;
+    private float _checkRadius;
+    [SerializeField]
+    private LayerMask _layerMask;
 
     void Start()
     {
@@ -44,12 +53,13 @@ public class Player : MonoBehaviour
         _moveSpeed        = 30f;
         _gravity          = 9.81f*6;
         _jumpHeight       = 15;
-        _maxSightDistance = 10;
-        _hp               = 100;
+        _maxSightDistance = 20;
+        _hpMax            = 100;
+        _hp               = _hpMax;
         _bulletSpeed      = 100;
         _alive            = true;
         _paused           = false;
-        _canvasManager    = GameObject.Find("CanvasManager");
+        _checkRadius = 0.5f;
     }
 
     void Update()
@@ -70,7 +80,7 @@ public class Player : MonoBehaviour
         _rotateX                = Input.GetAxis("Mouse X") * _sensitivity;
         _rotateY                = Input.GetAxis("Mouse Y") * _sensitivity;
         _cameraRotation        -= _rotateY;
-        _cameraRotation         = Mathf.Clamp(_cameraRotation, -50f, 50f);
+        _cameraRotation         = Mathf.Clamp(_cameraRotation, -50f, 80f);
 
         GetComponent<Transform>().Rotate(Vector3.up * _rotateX);
 
@@ -88,6 +98,7 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        _onGround = Physics.CheckSphere(_bottom.position, _checkRadius, _layerMask);
         if (Input.GetButtonDown("Jump") && _onGround)
         { 
             _onGround   = false;
@@ -98,11 +109,16 @@ public class Player : MonoBehaviour
         GetComponent<CharacterController>().Move(_velocity * Time.deltaTime);
     }
 
-    private void OnCollisionStay(Collision collision)
+   private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "ground" && !_onGround) _onGround = true;
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "redzone") ModifyHealth(-0.05f);
+        if (other.gameObject.tag == "greenzone") ModifyHealth(0.05f);
+    }
     private void Look()
     {
 
@@ -145,26 +161,31 @@ public class Player : MonoBehaviour
     private void Shoot()
     {
        if (Input.GetMouseButtonDown(0))
-       // if (shoot)
         {
-            //GameObject projectile = Instantiate(bullet) as GameObject;
             GameObject bullet = BulletPooler.pooler.GetBullet();
             if (bullet != null)
             {
-                bullet.transform.position = Camera.transform.position * _far;
-                bullet.GetComponent<Rigidbody>().velocity = Camera.transform.forward * _force;
+                bullet.transform.position = Camera.transform.position;
+                bullet.GetComponent<Rigidbody>().velocity = Camera.transform.forward * _bulletSpeed;
                 bullet.SetActive(true);
             }
 
         }
     }
-    private void Freeze()
+
+    public void ModifyHealth(float health)
     {
-        GetComponent<Rigidbody>().isKinematic = _paused;
+        _hp += health;
+        if (_hp > _hpMax) _hp = _hpMax;
+        _canvasManager.GetComponent<CanvasManager>().ChangeHealth();
     }
 
-    public void TakeDamage(float damage)
+    public float GetHealth()
     {
-        _hp -= damage;
+        return _hp;
+    }
+    public float GetMaxHealth()
+    {
+        return _hpMax;
     }
 }

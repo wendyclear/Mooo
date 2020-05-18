@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class LoadingBar : MonoBehaviour
 {
-    public Text _percentage;
-    public Slider _slider;
+    [SerializeField]
+    private Text _percentage;
+    [SerializeField]
+    private Slider _slider;
     private AsyncOperation _loading;
     public void LoadGame()
     {

@@ -9,21 +9,33 @@ using UnityEngine.UI;
 public class CanvasManager : MonoBehaviour
 {
     private bool _gameOn;
-    private GameObject _player;
 
-    public Text _itemText;
-    public Text _resultText;
+    [SerializeField]
+    private Player _player; 
 
-    public GameObject _crosshairMenu;
-    public GameObject _pauseMenu;
-    public GameObject _itemMenu;
-    public GameObject _finishMenu;
+     [SerializeField]
+    private Text _itemText;
+    [SerializeField]
+    private Text _resultText;
+    [SerializeField]
+    private Text _healthText;
+
+    [SerializeField]
+    private GameObject _crosshairMenu;
+    [SerializeField]
+    private GameObject _pauseMenu;
+    [SerializeField]
+    private GameObject _itemMenu;
+    [SerializeField]
+    private GameObject _finishMenu;
+    [SerializeField]
+    private UIInventory _inventoryMenu;
 
     void Start()
     {
         _gameOn = true;
-        _player = GameObject.Find("FirstPersonPlayer");
         Time.timeScale = 1;
+        ChangeHealth();
     }
 
     private void Update()
@@ -35,6 +47,10 @@ public class CanvasManager : MonoBehaviour
         if (Input.GetButtonDown("R"))
         {
             OnButtonClick_RestartGame();
+        }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            OpenInventory();
         }
     }
     public void ShowMessage(string msg)
@@ -52,7 +68,7 @@ public class CanvasManager : MonoBehaviour
     {
         if (_gameOn)
         {
-            _player.GetComponent<Player>().Pause(true);
+            _player.Pause(true);
             _gameOn = false;
             _crosshairMenu.SetActive(false);
             _itemText.gameObject.SetActive(false);
@@ -61,7 +77,7 @@ public class CanvasManager : MonoBehaviour
         }
         else
         {
-            _player.GetComponent<Player>().Pause(false);
+            _player.Pause(false);
             _gameOn = true;
             _crosshairMenu.SetActive(true);
             _pauseMenu.SetActive(false);
@@ -86,12 +102,37 @@ public class CanvasManager : MonoBehaviour
     public void GameOver(bool win)
     {
         _gameOn = false;
-        _player.GetComponent<Player>().Pause(true);
+        _player.Pause(true);
         _crosshairMenu.SetActive(false);
         _itemMenu.SetActive(false);
         _pauseMenu.SetActive(false);
         if (win) _resultText.text = "YOU WON!";
         else _resultText.text = "YOU LOST!";
         _finishMenu.SetActive(true);
+    }
+
+    public void ChangeHealth()
+    {
+        _healthText.text = "Your health : " + Mathf.FloorToInt(_player.GetHealth()).ToString()+ "/"+ _player.GetMaxHealth().ToString();
+    }
+
+    public void OpenInventory()
+    {
+        if (_gameOn)
+        {
+            _player.Pause(true);
+            _gameOn = false;
+            _crosshairMenu.SetActive(false);
+            _itemText.gameObject.SetActive(false);
+            _pauseMenu.SetActive(false);
+            _inventoryMenu.OpenInventory();
+        }
+        else
+        {
+            _gameOn = true;
+            _player.Pause(false);
+            _crosshairMenu.SetActive(true);
+            _inventoryMenu.CloseInventory();
+        }
     }
 }

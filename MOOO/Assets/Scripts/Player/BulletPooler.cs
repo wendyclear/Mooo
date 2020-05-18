@@ -5,11 +5,12 @@ using UnityEngine;
 public class BulletPooler : MonoBehaviour
 {
     public static BulletPooler pooler;
-
-    public GameObject _bullet;
-    public int _numOfBullets;
-
-    public List<GameObject> _bullets;
+    [SerializeField]
+    private GameObject _bullet;
+    [SerializeField]
+    private int _numOfBullets;
+    [SerializeField]
+    private List<GameObject> _bullets;
 
     private void Awake()
     {

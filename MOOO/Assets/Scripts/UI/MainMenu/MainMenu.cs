@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject _mainCanvas;
-    public GameObject _instructionsCanvas;
-    public GameObject _buttons;
-    public GameObject _loadingBar;
+    [SerializeField]
+    private GameObject _mainCanvas;
+    [SerializeField]
+    private GameObject _instructionsCanvas;
+    [SerializeField]
+    private GameObject _buttons;
+    [SerializeField]
+    private GameObject _loadingBar;
 
     public void OnButtonClick_ExitGame()
     {
