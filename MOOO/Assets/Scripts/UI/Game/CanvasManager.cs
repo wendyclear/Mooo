@@ -19,6 +19,10 @@ public class CanvasManager : MonoBehaviour
     private Text _resultText;
     [SerializeField]
     private Text _healthText;
+    [SerializeField]
+    private Text _ammoText;
+    [SerializeField]
+    private Text _bucketText;
 
     [SerializeField]
     private GameObject _crosshairMenu;
@@ -33,9 +37,10 @@ public class CanvasManager : MonoBehaviour
 
     void Start()
     {
-        _gameOn = true;
+        _gameOn        = true;
         Time.timeScale = 1;
         ChangeHealth();
+        ChangeAmmo();
     }
 
     private void Update()
@@ -48,7 +53,7 @@ public class CanvasManager : MonoBehaviour
         {
             OnButtonClick_RestartGame();
         }
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && !_pauseMenu.activeSelf)
         {
             OpenInventory();
         }
@@ -73,6 +78,7 @@ public class CanvasManager : MonoBehaviour
             _crosshairMenu.SetActive(false);
             _itemText.gameObject.SetActive(false);
             _pauseMenu.SetActive(true);
+            _inventoryMenu.CloseInventory();
 
         }
         else
@@ -81,6 +87,7 @@ public class CanvasManager : MonoBehaviour
             _gameOn = true;
             _crosshairMenu.SetActive(true);
             _pauseMenu.SetActive(false);
+            _inventoryMenu.CloseInventory();
         }
 
     }
@@ -113,7 +120,16 @@ public class CanvasManager : MonoBehaviour
 
     public void ChangeHealth()
     {
-        _healthText.text = "Your health : " + Mathf.FloorToInt(_player.GetHealth()).ToString()+ "/"+ _player.GetMaxHealth().ToString();
+        _healthText.text = "Your health : " + Mathf.FloorToInt(_player.GetHealth()).ToString()+ " / "+ _player.GetMaxHealth().ToString();
+    }
+    public void ChangeAmmo()
+    {
+        _ammoText.text = "Your ammo : " + _inventoryMenu.CountOf("Ammo");
+    }
+
+    public void ChangeBuckets()
+    {
+        _bucketText.text = "Buckets collected : " + _inventoryMenu.CountOf("Bucket of milk");
     }
 
     public void OpenInventory()

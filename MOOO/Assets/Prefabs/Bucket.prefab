@@ -140,6 +140,7 @@ MonoBehaviour:
   _name: Bucket of milk
   _maxStack: 1
   _sprite: {fileID: 21300000, guid: 2706541ef2a5c114c86a0d0968b392a6, type: 3}
+  _amount: 1
   _canvasManager: {fileID: 0}
   _UIInventory: {fileID: 0}
   _destroyOnInteract: 1

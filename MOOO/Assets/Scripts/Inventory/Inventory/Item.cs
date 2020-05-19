@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class Item 
@@ -12,8 +10,8 @@ public class Item
 
     public Item()
     {
-        _name       = null;
-        _icon       = null;
+        _name      = null;
+        _icon      = null;
         _amount    = 0;
         _maxAmount = 0;
     }
@@ -25,6 +23,13 @@ public class Item
         _amount    = amount;
         _maxAmount = maxAmount;
 
+    }
+    public void Reset()
+    {
+        _name      = null;
+        _icon      = null;
+        _amount    = 0;
+        _maxAmount = 0;
     }
 
 public string GetName()
@@ -42,6 +47,11 @@ public string GetName()
         return _amount;
     }
 
+    public void SetAmount(int amount)
+    {
+        _amount = amount;
+    }
+
 
     public int GetMaxAmount()
     {
@@ -53,6 +63,35 @@ public string GetName()
         _amount += amount;
     }
 
+    public void RemoveAmount(int amount)
+    {
+        _amount -= amount;
+    }
 
+    public void SetMaxAmount()
+    {
+        _amount = _maxAmount;
+    }
+
+    public int Split()
+    {
+        int half = _amount / 2;
+        _amount  = _amount / 2 + _amount % 2;
+        return half;
+    }
+
+    public int Fit(int amount)
+    {
+        if (amount + _amount <= _maxAmount)
+        {
+            AddAmount(amount);
+            return 0;
+        }
+        else
+        {
+            SetMaxAmount();
+            return (amount + _amount - _maxAmount);
+        }
+    }
 
 }

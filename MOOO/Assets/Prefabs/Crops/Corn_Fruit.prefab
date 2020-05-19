@@ -108,6 +108,7 @@ MonoBehaviour:
   _name: corn
   _maxStack: 10
   _sprite: {fileID: 21300000, guid: 4ad037f840ad0fe46a0cfeb52012a656, type: 3}
+  _amount: 1
   _canvasManager: {fileID: 0}
   _UIInventory: {fileID: 0}
   _destroyOnInteract: 0

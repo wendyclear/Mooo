@@ -12,6 +12,8 @@ public class Interactable : MonoBehaviour
 	[SerializeField]
 	private Sprite _sprite;
 	[SerializeField]
+	private int _amount;
+	[SerializeField]
 	private CanvasManager _canvasManager;
 	[SerializeField]
 	private UIInventory _UIInventory;
@@ -21,7 +23,7 @@ public class Interactable : MonoBehaviour
 	private void Start()
 	{
 		_canvasManager = GameObject.Find("CanvasManager").GetComponent<CanvasManager>();
-		_UIInventory = GameObject.Find("InventoryMenu").GetComponent<UIInventory>();
+		_UIInventory   = GameObject.Find("InventoryMenu").GetComponent<UIInventory>();
 	}
 	public void ShowText()
 	{
@@ -30,7 +32,7 @@ public class Interactable : MonoBehaviour
 
 	public void Interact()
 	{
-		if (_UIInventory.AddItem(_name, _sprite, _maxStack))
+		if (_UIInventory.AddItem(_name, _sprite, _maxStack, _amount))
 		{
 			if (_destroyOnInteract) Object.Destroy(gameObject);
 		}

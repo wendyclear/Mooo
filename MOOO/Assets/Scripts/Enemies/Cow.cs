@@ -29,11 +29,6 @@ public class Cow : MonoBehaviour
     [SerializeField]
     private float _currentWaitTime;
 
-    [SerializeField]
-    private float _standTime;
-    [SerializeField]
-    private float _currentStandTime;
-
     private float _alpha;
     private Vector3 _walkTo;
 
@@ -42,12 +37,11 @@ public class Cow : MonoBehaviour
 
     private void Start()
     {
-        _maxHp = 100;
-        _alpha = 0.5f;
-        _waitTime = 3;
-        _standTime = 10;
+        _maxHp      = 100;
+        _alpha      = 0.5f;
+        _waitTime   = 3;
         Initialize();
-        _position = GetComponent<Transform>();
+        _position   = GetComponent<Transform>();
     }
 
     private void OnEnable()
@@ -91,11 +85,10 @@ public class Cow : MonoBehaviour
 
     private void Initialize()
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-        _currentWaitTime = 0;
+        _navMeshAgent             = GetComponent<NavMeshAgent>();
+        _currentWaitTime          = 0;
         _healthBar.material.color = new Color(_rStart / 255, _gStart / 255, _bStart / 255, 1);
-        _hp = _maxHp;
-        _currentStandTime = 0;
+        _hp                       = _maxHp;
         GetRandomLocation(60);
         _navMeshAgent.SetDestination(_walkTo);
     }

@@ -38,28 +38,20 @@ public class Player : MonoBehaviour
     [SerializeField]                
     private GameObject  Camera;
     [SerializeField]
-    private GameObject _canvasManager;
-
+    private CanvasManager _canvasManager;
     [SerializeField]
     private Transform _bottom;
     private float _checkRadius;
     [SerializeField]
     private LayerMask _layerMask;
+    [SerializeField]
+    private Sprite _bulletSprite;
+    [SerializeField]
+    private UIInventory _inventory;
 
     void Start()
     {
-        _sensitivity      = 4f;
-        _cameraRotation   = 0f;
-        _moveSpeed        = 30f;
-        _gravity          = 9.81f*6;
-        _jumpHeight       = 15;
-        _maxSightDistance = 20;
-        _hpMax            = 100;
-        _hp               = _hpMax;
-        _bulletSpeed      = 100;
-        _alive            = true;
-        _paused           = false;
-        _checkRadius = 0.5f;
+        Initialize();
     }
 
     void Update()
@@ -137,7 +129,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _canvasManager.GetComponent<CanvasManager>().HideMessage();
+            _canvasManager.HideMessage();
         }
 
     }
@@ -147,7 +139,7 @@ public class Player : MonoBehaviour
         if (_hp <= 0)
         {
             _alive = false;
-            _canvasManager.GetComponent<CanvasManager>().GameOver(_alive);
+            _canvasManager.GameOver(_alive);
         }
     }
 
@@ -160,7 +152,7 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-       if (Input.GetMouseButtonDown(0))
+       if (Input.GetMouseButtonDown(0) && _inventory.CountOf("Ammo") > 0)
         {
             GameObject bullet = BulletPooler.pooler.GetBullet();
             if (bullet != null)
@@ -168,6 +160,7 @@ public class Player : MonoBehaviour
                 bullet.transform.position = Camera.transform.position;
                 bullet.GetComponent<Rigidbody>().velocity = Camera.transform.forward * _bulletSpeed;
                 bullet.SetActive(true);
+                _inventory.RemoveItem("Ammo");
             }
 
         }
@@ -177,7 +170,7 @@ public class Player : MonoBehaviour
     {
         _hp += health;
         if (_hp > _hpMax) _hp = _hpMax;
-        _canvasManager.GetComponent<CanvasManager>().ChangeHealth();
+        _canvasManager.ChangeHealth();
     }
 
     public float GetHealth()
@@ -187,5 +180,22 @@ public class Player : MonoBehaviour
     public float GetMaxHealth()
     {
         return _hpMax;
+    }
+
+    private void Initialize()
+    {
+        _sensitivity      = 4f;
+        _cameraRotation   = 0f;
+        _moveSpeed        = 30f;
+        _gravity          = 9.81f * 6;
+        _jumpHeight       = 15;
+        _maxSightDistance = 20;
+        _hpMax            = 100;
+        _hp               = _hpMax;
+        _bulletSpeed      = 100;
+        _alive            = true;
+        _paused           = false;
+        _checkRadius      = 0.5f;
+        _inventory.AddItem("Ammo", _bulletSprite, 100, 30);
     }
 }
